@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+/* ユーザー情報下ボタン */
+
+.btn-users-show {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
 /* ユーザー勤怠情報テーブル */
 
 #table-attendances {
@@ -36,6 +43,16 @@
   margin-top: 10px;
 }
 
+/* 曜日 */
+
+.saturday {
+  color: blue;
+}
+
+.sunday {
+  color: red;
+}
+
 /* ユーザー一覧ページ */
 
 #table-users {
@@ -43,6 +60,8 @@
     vertical-align: middle;
   }  
 }
+
+/* 基本情報編集モーダルウインドウ */
 
 .label-basic-info {
   margin-top: 5px;
