@@ -4,10 +4,10 @@
     <tr>
       <td>
         <%= link_to "⇦", user_path(date: @first_day.prev_month),
-            class: "btn btn-info" %>
+            class: "btn btn-primary" %>
         【<%= l(@first_day, format: :middle) %>】時間管理表
         <%= link_to "⇨", user_path(date: @first_day.next_month),
-            class: "btn btn-info" %>
+            class: "btn btn-primary" %>
         </td>
       <td>指定勤務時間：<%= format_basic_info(@user.work_time) %></td>
       <td>基本時間：<%= format_basic_info(@user.basic_time) %></td>
@@ -23,30 +23,48 @@
   </table>
 </div>
 
+<div class="btn-users-show">【所属長承認申請のお知らせ】</div>
+<div class="btn-users-show">【勤怠変更申請のお知らせ】</div>
+<div class="btn-users-show">【残業申請のお知らせ】</div>
+
 <div class="btn-users-show">
   <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day),
-      class: "btn btn-success" %>
+      class: "btn btn-primary" %>
+  <%= link_to "CSV出力", "#", class: "btn btn-primary" %>
+</div>
+<div class="btn-users-show">
+  <%= link_to "勤怠修正ログ（承認済）", "#", class: "btn btn-primary" %>
 </div>
 
 <div>
   <table class="table table-bordered table-condensed table-hover" id="table-attendances">
     <thead>
       <tr>
-        <th>残業申請</th>
-        <th>日付</th>
-        <th>曜日</th>
-        <th>勤怠登録</th>
+        <th rowspan = "2">残業申請</th>
+        <th rowspan = "2">日付</th>
+        <th rowspan = "2">曜日</th>
+        <th rowspan = "2">勤怠登録</th>
+        <td colspan = "4">【実績】</td>
+        <td colspan = "4">所定外勤務</td>
+      </tr>
+      <tr>
         <th>出社時間</th>
         <th>退社時間</th>
         <th>在社時間</th>
         <th>備考</th>
+        <th>終了予定時間</th>
+        <th>時間外時間</th>
+        <th>業務処理内容</th>
+        <th>指示者確認㊞</th>
       </tr>
     </thead>
 
     <tbody>
       <% @attendances.each do |day| %>
         <tr>
-          <td></td>
+          <td>
+            <%= link_to "残業申請", "#", class: "btn btn-primary" %>
+          </td>
           <td><%= l(day.worked_on, format: :short) %></td>
           <% if $days_of_the_week[day.worked_on.wday] == "土" %>
             <td class = "saturday">
@@ -95,28 +113,26 @@
             <% end %>
           </td>
           <td><%= day.note %></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       <% end %>
     </tbody>
 
     <tfoot>
-      <!--rowspan:縦結合、colspan：横結合-->
       <tr>
         <td></td>
-        <td colspan="2">累計日数</td>
-        <td colspan="2">総合勤務時間</td>
-        <td colspan="2">累計在社時間</td>
-        <td rowspan="1">所属長承認</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td colspan="2"><%= @attendances.count %></td>
-        <td colspan="2">
-          <%= format_basic_info(@user.work_time).to_f * @worked_sum %>
-        </td>
-        <td colspan="2"><%= format("%.2f", @total_working_times.to_f) %></td>
-        <td></td>
+        <td colspan = "2"></td>
+        <td colspan = "3"></td>
+        <td><%= format("%.2f", @total_working_times.to_f) %></td>
+        <td colspan = "4"></td>
+        <td> <%= link_to "申請", "#", class: "btn btn-primary" %></td>
       </tr>
     </tfoot>    
   </table>
 </div>
+
+<!--モーダルウインドウ表示-->
+<div id="applicate-overtime" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
