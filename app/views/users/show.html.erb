@@ -23,9 +23,9 @@
   </table>
 </div>
 
-<div class="btn-users-show">【所属長承認申請のお知らせ】</div>
-<div class="btn-users-show">【勤怠変更申請のお知らせ】</div>
-<div class="btn-users-show">【残業申請のお知らせ】</div>
+<div class="btn-users-show"><%= link_to "【所属長承認申請のお知らせ】", "#" %></div>
+<div class="btn-users-show"><%= link_to "【勤怠変更申請のお知らせ】", "#" %></div>
+<div class="btn-users-show"><%= link_to "【残業申請のお知らせ】", "#" %></div>
 
 <div class="btn-users-show">
   <%= link_to "勤怠を編集", attendances_edit_one_month_user_path(date: @first_day),
