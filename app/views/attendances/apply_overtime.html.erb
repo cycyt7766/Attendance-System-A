@@ -1,0 +1,51 @@
+<%= form_with(model: @user, local: true) do |f| %>
+  <div>
+    <div class="center">
+      <h1>【残業申請】</h1>
+    </div>
+    <%= render 'shared/error_messages', object: @user %>
+    <table class="table table-bordered table-condensed table-hover" id="table-attendances">
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>曜日</th>
+          <th>終了予定時間</th>
+          <th>翌日</th>
+          <th>業務処理内容</th>
+          <th>指示者確認㊞</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @attendances.each do |day| %>
+          <%= f.fields_for "attendances[]", day do |attendance| %>
+            <% if day.worked_on == params[:date].to_date %>
+              <tr>
+                <td><%= l(day.worked_on, format: :short) %></td>
+                <% if $days_of_the_week[day.worked_on.wday] == "土" %>
+                  <td class = "saturday">
+                <% elsif $days_of_the_week[day.worked_on.wday] == "日" %>
+                  <td class = "sunday">
+                <% else %>
+                  <td>
+                <% end %>
+                <%= $days_of_the_week[day.worked_on.wday] %></td>
+                <td>
+                  <%= attendance.time_field :finished_at, class: "form-control" %>
+                </td>
+                <td>
+                  <%= f.check_box :complete %>
+                </td>
+                <td><%= attendance.text_field :note, class: "form-control" %></td>
+                <td></td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="center">
+    <%= link_to "キャンセル", user_path(date: @first_day.beginning_of_month),
+        class: "btn btn-lg btn-primary" %>
+  </div>
+<% end %>

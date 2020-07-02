@@ -20,7 +20,7 @@
         <% @attendances.each do |day| %>
           <%= f.fields_for "attendances[]", day do |attendance| %>
             <tr>
-              <td><%= l(day.worked_on, format: :short) %></td>
+              <td><%= l(@first_day, format: :short) %></td>
               <% if $days_of_the_week[day.worked_on.wday] == "土" %>
                 <td class = "saturday">
               <% elsif $days_of_the_week[day.worked_on.wday] == "日" %>
@@ -47,9 +47,7 @@
                 </td>
               <% end %>
               <td>
-                <%= form_with(scope: :attendance, url: "#", local: true) do |f| %>
-                  <%= f.check_box :complete %>
-                <% end %>
+                <%= f.check_box :complete %>
               </td>
               <td>
                 <% if day.started_at.present? && day.finished_at.present? %>
