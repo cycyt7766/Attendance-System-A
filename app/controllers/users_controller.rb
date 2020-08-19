@@ -3,18 +3,34 @@ class UsersController < ApplicationController
                  only: [:show, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
   before_action :logged_in_user,
                  only: [:index, :edit, :update, :destroy, :edit_basic_info, :update_basic_info]
-  before_action :correct_user, only: [:edit, :update]
   before_action :admin_user, only: [:destroy, :edit_basic_info, :update_basic_info]
   before_action :set_one_month, only: :show
 
   def index
-    @users = User.paginate(page:params[:page])
-    if params[:search].present?
-      @users = @users.search(params[:search])
+    @users = User.all
+    respond_to do |format|
+      format.html do
+        # html用の処理
+      end
+      format.csv do
+        # csv用の処理
+        send_data render_to_string, filename: "(ファイル名).csv", type: :csv
+      end
     end
-    unless current_user?(@user) || current_user.admin?
+    unless current_user.admin?
       flash[:danger] = "閲覧権限がありません。"
       redirect_to root_url
+    end
+  end
+  
+  def import
+    if params[:file].blank?
+      flash[:danger] = "インポートするCSVファイルを選択してください。"
+      redirect_to users_url
+    else
+      User.import(params[:file])
+      flash[:success] = "CSVファイルをインポートしました。"
+      redirect_to users_url
     end
   end
 
@@ -50,14 +66,18 @@ class UsersController < ApplicationController
   end
 
   def edit
+    unless current_user.admin? && !current_user?(@user)
+      flash[:danger] = "編集権限がありません。"
+      redirect_to root_url
+    end
   end
 
   def update
     if @user.update_attributes(user_params)
-      flash[:success] = "ユーザー情報を更新しました。"
-      redirect_to @user
+      flash[:success] = "#{@user.name}の基本情報を編集しました。"
+      redirect_to users_url
     else
-      render :edit      
+      render :edit
     end
   end
 
@@ -82,11 +102,18 @@ class UsersController < ApplicationController
 
   private
 
-    def user_params
-      params.require(:user).permit(:name, :email, :department, :password, :password_confirmation)
+    def self.import(file)
+      CSV.foreach(file.path, headers: true) do |row|
+        user = new
+        user.attributes = row.to_hash.slice(*updatable_attributes)
+        user.save!
+      end
     end
 
-    def basic_info_params
-      params.require(:user).permit(:department, :basic_time, :work_time)
+    def user_params
+      params.require(:user).permit(:name, :email, :affiliation, :employee_number, :uid,
+                                   :password, :password_confirmation,
+                                   :basic_work_time, :designated_work_start_time, :designated_work_end_time)
     end
+
 end

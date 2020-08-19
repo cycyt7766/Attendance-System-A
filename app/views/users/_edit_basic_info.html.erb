@@ -1,6 +1,5 @@
-<%= form_with(model: @user, local: true) do |f| %>
-  <%= render partial: 'shared/error_messages', locals: { obj: @user } %>
-
+<%= form_with(model: user, local: true) do |f| %>
+  
   <%= f.label :name, class: "label-#{yield(:class_text)}" %>
   <%= f.text_field :name, class: "form-control" %>
 
@@ -33,4 +32,5 @@
   
   <%= f.submit yield(:button_text),
       class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
+
 <% end %>

@@ -9,14 +9,21 @@
         <%= link_to "⇨", user_path(date: @first_day.next_month),
             class: "btn btn-primary" %>
         </td>
-      <td>指定勤務時間：<%= format_basic_info(@user.work_time) %></td>
-      <td>基本時間：<%= format_basic_info(@user.basic_time) %></td>
-      <td>初日：<%= l(@first_day, format: :short) %></td>
+      <td>
+        指定勤務開始時間：<%= l(@user.designated_work_start_time, format: :time) %>
+        <br>
+          指定勤務終了時間：<%= l(@user.designated_work_end_time, format: :time) %>
+        </br>
+      </td>
+      <td colspan = "3">基本時間：<%= format_basic_info(@user.basic_work_time) %></td>
+      <td>月初日：<%= l(@first_day, format: :short) %></td>
     </tr>
 
     <tr>
-      <td>所属：<%= @user.department.present? ? @user.department : "未所属" %></td>
+      <td>所属：<%= @user.affiliation.present? ? @user.affiliation : "未所属" %></td>
       <td>名前：<%= @user.name %></td>
+      <td>コード</td>
+      <td><%= @user.employee_number %></td>
       <td>出勤日数：<%= @worked_sum %>日</td>
       <td>締め：<%= l(@last_day, format: :short) %></td>
     </tr>
@@ -96,13 +103,13 @@
           <td>
             <% if day.finished_at.present? %>
               <% if (0 <= day.finished_at.min && day.finished_at.min <= 14) %>
-                <%= l(day.started_at.change(min: 0), format: :time) %>
+                <%= l(day.finished_at.change(min: 0), format: :time) %>
               <% elsif (15 <= day.finished_at.min && day.finished_at.min <= 29) %>
-                <%= l(day.started_at.change(min: 15), format: :time) %>
+                <%= l(day.finished_at.change(min: 15), format: :time) %>
               <% elsif (30 <= day.finished_at.min && day.finished_at.min <= 44) %>
-                <%= l(day.started_at.change(min: 30), format: :time) %>
+                <%= l(day.finished_at.change(min: 30), format: :time) %>
               <% elsif (45 <= day.finished_at.min && day.finished_at.min <= 59) %>
-                <%= l(day.started_at.change(min: 45), format: :time) %>
+                <%= l(day.finished_at.change(min: 45), format: :time) %>
               <% end %>
             <% end %>
           </td>

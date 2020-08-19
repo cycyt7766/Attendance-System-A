@@ -10,9 +10,10 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 100 },
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true
-  validates :department, length: { in: 2..50 }, allow_blank: true
-  validates :basic_time, presence: true
-  validates :work_time, presence: true
+  validates :affiliation, length: { in: 2..30 }, allow_blank: true
+  validates :basic_work_time, presence: true
+  validates :designated_work_start_time, presence: true, allow_blank: true
+  validates :designated_work_end_time, presence: true, allow_blank: true
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
@@ -50,8 +51,27 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, nil)
   end
   
+  # self.はuser.を意味する
   def self.search(search)
-    return User.all unless search
+    if search
+      # 検索とnameの部分一致を表示。User.は省略。
       where(['name LIKE ?', "%#{search}%"])
+    else
+      all
+    end
+  end
+  
+  def self.import(file)
+    CSV.foreach(file.path, headers: true, encoding: 'Shift_JIS:UTF-8') do |row|
+      user = new
+      user.attributes = row.to_hash.slice(*updatable_attributes)
+      user.save!
+    end
+  end
+  
+  # 更新を許可するカラムを定義
+  def self.updatable_attributes
+    ["name", "email", "affiliation", "employee_number", "uid","basic_work_time",
+     "designated_work_start_time", "designated_work_end_time", "password"]
   end
 end

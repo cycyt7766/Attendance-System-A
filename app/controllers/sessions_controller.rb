@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
 
-  # ログイン状態に対し、ログインページを制限する機能を追加
   def new
     if logged_in?
       flash[:info] = 'すでにログインしています。'
