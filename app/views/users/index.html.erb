@@ -15,7 +15,7 @@
 </div>
 
 <% @users.each do |user| %>
-  <% if current_user.admin? && !current_user?(user) %>
+  <% unless current_user?(user) %>
     <div>
       <div class="col-md-11 col-md-offset-1">
         <table class="table table-condensed table-hover" id="table-users">

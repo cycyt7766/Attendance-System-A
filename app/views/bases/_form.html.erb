@@ -1,0 +1,15 @@
+<%= form_with(model: @base, local: true) do |f| %>
+  <%= render partial: 'shared/error_messages', locals: { obj: @base } %>
+
+  <%= f.label :base_id, class: "label-#{yield(:class_text)}" %>
+  <%= f.number_field :base_id, class: "form-control", placeholder: "拠点番号を記入してください。" %>
+
+  <%= f.label :name, class: "label-#{yield(:class_text)}" %>
+  <%= f.text_field :name, class: "form-control", placeholder: "拠点名を記入してください。" %>
+
+  <%= f.label :attendance_sort, class: "label-#{yield(:class_text)}" %>
+  <%= f.select :attendance_sort, [["出勤", "出勤"], ["退勤", "退勤"]], include_blank: "選択してください。", class: "form-control" %>
+  
+  <%= f.submit yield(:button_text),
+      class: "btn btn-primary btn-block btn-#{yield(:class_text)}" %>
+<% end %>

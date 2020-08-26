@@ -48,7 +48,7 @@ class UsersController < ApplicationController
     # 管理者のみ新規アカウント作成可能
     if logged_in? && !current_user.admin?
       flash[:info] = 'すでにログインしています。'
-      redirect_to current_user
+      redirect_to root_url
     end
     
     @user = User.new

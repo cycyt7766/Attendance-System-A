@@ -18,4 +18,10 @@ Rails.application.routes.draw do
     collection {post :import}
     resources :attendances, only: :update
   end
+  
+  resources :bases do
+    get 'edit_basic_info'
+    patch 'update_basic_info'
+  end
+
 end

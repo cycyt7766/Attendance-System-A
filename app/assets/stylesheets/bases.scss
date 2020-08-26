@@ -1,0 +1,50 @@
+/* 拠点テーブル */
+
+.base-table {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* 拠点下ボタン */
+
+.btn-bases-show {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+/* 入力フォーム */
+
+.label-base--new {
+  margin-top: 5px;
+}
+
+.btn-base--new {
+  margin-top: 10px;
+}
+
+.label-base--edit {
+  margin-top: 5px;
+}
+
+.btn-base--edit {
+  margin-top: 10px;
+}
+
+/* 拠点一覧ページ */
+
+#table-bases {
+  td {
+    vertical-align: middle;
+  }  
+}
+
+/* 拠点モーダルウインドウ */
+
+.label-basic-info {
+  margin-top: 5px;
+}
+
+.btn-basic-info {
+  margin: 15px 0;
+  width: 30%;
+}
