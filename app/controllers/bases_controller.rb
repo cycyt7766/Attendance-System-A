@@ -1,6 +1,5 @@
 class BasesController < ApplicationController
-
-  $attendance = %w(出勤 退勤)
+  before_action :set_base, only: [:update, :destroy]
 
   def index
     @bases = Base.all
@@ -46,14 +45,18 @@ class BasesController < ApplicationController
 
   def destroy
     @base.destroy
-    flash[:success] = "#{@base.name}のデータを削除しました。"
+    flash[:success] = "#{@base.base_id}のデータを削除しました。"
     redirect_to bases_url
   end
   
   private
   
     def base_params
-      params.require(:base).permit(:base_id, :name, :attendance_sort)
+      params.require(:base).permit(:base_id, :name, :attendance_status)
+    end
+    
+    def set_base
+      @base = Base.find(params[:id])
     end
   
 end

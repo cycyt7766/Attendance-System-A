@@ -27,4 +27,4 @@ ja:
         base:
           base_id: 拠点番号（半角数字3桁以内）
           name: 拠点名（３０文字以内）
-          attendance_sort: 勤怠種類（選択必須）
+          attendance_status: 勤怠種類（選択必須）
